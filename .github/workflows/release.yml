@@ -1,0 +1,25 @@
+name: Release
+on:
+  push:
+    branches: [master, main]
+jobs:
+  create_release:
+    name: Create GitHub Release
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: rumblefrog/setup-sp@master
+        with:
+          version: '1.11.x'
+
+      - run: spcomp src/clutchmoney.sp
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "Release"
+          files: |
+            clutchmoney.smx
